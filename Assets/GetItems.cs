@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class GetItems : MonoBehaviour {
 
+    public GameObject page;
     public GameObject testi;
     public GameObject marketItemButton;
     public GameObject thiscanvas;
@@ -71,6 +72,15 @@ public class GetItems : MonoBehaviour {
             listbutton.transform.position = pos;
             listbutton.transform.SetParent(testi.transform, false);
             listbutton.GetComponentInChildren<Text>().text = "Item: " + root.data[i].item_id + ". Price :" + root.data[i].price + " KYRPEÄ";
+
+            if(i > 5)
+            {
+                GameObject pageGo = Instantiate(page);
+                Vector3 pos2 = pageGo.transform.position;
+                pos2.y -= 100f * i;
+                pageGo.transform.position = pos;
+                pageGo.transform.SetParent(this.transform, false);
+            }
 
             //Debug.Log("Item " + i+1 + ": " +root.data[i].item_id);
         }
