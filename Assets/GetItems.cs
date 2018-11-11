@@ -7,11 +7,13 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class GetItems : MonoBehaviour {
-
+    int l = 0;
     public GameObject page;
     public GameObject testi;
     public GameObject marketItemButton;
     public GameObject thiscanvas;
+    public GameObject[] listbutton;
+    Vector3 pos;
     private string uri = "https://5sd02u10pk.execute-api.eu-central-1.amazonaws.com/dev/softcore/shop/equipment/";
 
     // Use this for initialization
@@ -54,35 +56,47 @@ public class GetItems : MonoBehaviour {
 
             string items = request.downloadHandler.text;
             Debug.Log("Items is shop: " + request.downloadHandler.text);
+
             CreateFromJSON(items);
 
 
         }
     }
 
+    public void nextPage()        
+    {
+        Debug.Log("next page");
+        //i = i + 5;
+        //k = k + 5;
+        
+        StartCoroutine(GetRequest(uri));
+        foreach(GameObject go in listbutton)
+        {
+            GameObject.Destroy(go);
+        }
+
+    }
+
     public RootObject CreateFromJSON(string jsonString)
     {
+        //Debug.Log(i + " " + k);
         
         RootObject root = JsonUtility.FromJson<RootObject>(jsonString);
-        for(int i = 0; i < root.data.Count; i++)
+        //listbutton = new List<GameObject>(root.data.Count);
+
+        for(int i =0; i < root.data.Count && i < 5;  i++)
         {
-            GameObject listbutton = Instantiate(marketItemButton);
-            Vector3 pos = listbutton.transform.position;
+            Debug.Log("for silmukka: " + i);
+            listbutton[i] = Instantiate(marketItemButton);
+            
+            pos = listbutton[i].transform.position;
             pos.y -= 100f * i;
-            listbutton.transform.position = pos;
-            listbutton.transform.SetParent(testi.transform, false);
-            listbutton.GetComponentInChildren<Text>().text = "Item: " + root.data[i].item_id + ". Price :" + root.data[i].price + " KYRPEÄ";
+            listbutton[i].transform.position = pos;
+            listbutton[i].transform.SetParent(testi.transform, false);
+            listbutton[i].GetComponentInChildren<Text>().text = "Item: " + root.data[l].item_id + ". Price :" + root.data[l].price + " KYRPEÄ";
 
-            if(i > 5)
-            {
-                GameObject pageGo = Instantiate(page);
-                Vector3 pos2 = pageGo.transform.position;
-                pos2.y -= 100f * i;
-                pageGo.transform.position = pos;
-                pageGo.transform.SetParent(this.transform, false);
-            }
+            l++;
 
-            //Debug.Log("Item " + i+1 + ": " +root.data[i].item_id);
         }
         
         return JsonUtility.FromJson<RootObject>(jsonString);
