@@ -7,11 +7,10 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class GetItems : MonoBehaviour {
-    int l = 0;
+
     public GameObject page;
-    public GameObject testi;
+    public GameObject buttonParent;
     public GameObject marketItemButton;
-    public GameObject thiscanvas;
     public GameObject[] listbutton;
     Vector3 pos;
     private string uri = "https://5sd02u10pk.execute-api.eu-central-1.amazonaws.com/dev/softcore/shop/equipment/";
@@ -63,20 +62,6 @@ public class GetItems : MonoBehaviour {
         }
     }
 
-    public void nextPage()        
-    {
-        Debug.Log("next page");
-        //i = i + 5;
-        //k = k + 5;
-        
-        StartCoroutine(GetRequest(uri));
-        foreach(GameObject go in listbutton)
-        {
-            GameObject.Destroy(go);
-        }
-
-    }
-
     public RootObject CreateFromJSON(string jsonString)
     {
         //Debug.Log(i + " " + k);
@@ -84,18 +69,16 @@ public class GetItems : MonoBehaviour {
         RootObject root = JsonUtility.FromJson<RootObject>(jsonString);
         //listbutton = new List<GameObject>(root.data.Count);
 
-        for(int i =0; i < root.data.Count && i < 5;  i++)
+
+        for (int i =0; i < root.data.Count;  i++)
         {
-            Debug.Log("for silmukka: " + i);
             listbutton[i] = Instantiate(marketItemButton);
-            
-            pos = listbutton[i].transform.position;
+            pos = listbutton[i].transform.position = new Vector2(0, 350);
             pos.y -= 100f * i;
             listbutton[i].transform.position = pos;
-            listbutton[i].transform.SetParent(testi.transform, false);
-            listbutton[i].GetComponentInChildren<Text>().text = "Item: " + root.data[l].item_id + ". Price :" + root.data[l].price + " KYRPEÄ";
+            listbutton[i].transform.SetParent(buttonParent.transform, false);
+            listbutton[i].GetComponentInChildren<Text>().text = "   Item: " + root.data[i].item_id + ". Price :" + root.data[i].price + " KYRPEÄ";
 
-            l++;
 
         }
         

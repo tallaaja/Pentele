@@ -322,6 +322,7 @@
     <Compile Include="Assets\ClickableTile.cs" />
     <Compile Include="Assets\Fighter Pack Bundle FREE\Code\CameraControl.cs" />
     <Compile Include="Assets\Fighter Pack Bundle FREE\Code\FighterAnimationDemoFREE.cs" />
+    <Compile Include="Assets\FilterItems.cs" />
     <Compile Include="Assets\GetItems.cs" />
     <Compile Include="Assets\Grid.cs" />
     <Compile Include="Assets\ListInventory.cs" />
